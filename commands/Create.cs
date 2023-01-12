@@ -1,11 +1,28 @@
 using System.Diagnostics.CodeAnalysis;
 using Spectre.Console.Cli;
+using Stargazer.Dbus;
 
 namespace Stargazer.Commands {
-    public class Create : Command<CreateSettings> {
+    public class Create : AsyncCommand<CreateSettings> {
 
-        public override int Execute([NotNull] CommandContext context, [NotNull] CreateSettings settings)
+        public override async Task<int> ExecuteAsync([NotNull] CommandContext context, [NotNull] CreateSettings settings)
         {
+            ModLoader loader;
+
+            if (!Enum.TryParse<ModLoader>(settings.ModLoader, false, out loader)) {
+                Console.Error.WriteLine("{0} is not a valid value... ?", settings.ModLoader);
+                Environment.Exit(-1);
+            }
+
+
+            bool result = await DbusClient.CreateProfileAsync(settings.Name, settings.MinecraftVersion, loader);
+
+            if (result) {
+                Console.WriteLine("Created profile {0}", settings.Name);
+            } else {
+                Console.Error.WriteLine("Failed to create profile... ?");
+            }
+
             return 0;
         }
     }
