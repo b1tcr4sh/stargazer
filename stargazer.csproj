@@ -4,7 +4,12 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="spectre.console" Version="0.46.0" />
+    <PackageReference Include="spectre.console.cli" Version="0.46.0" />
+  </ItemGroup>
 
 </Project>
