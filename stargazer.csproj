@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="spectre.console" Version="0.46.0" />
     <PackageReference Include="spectre.console.cli" Version="0.46.0" />
+    <PackageReference Include="tmds.dbus" Version="0.11.0" />
   </ItemGroup>
 
 </Project>
