@@ -15,6 +15,9 @@ namespace Stargazer {
 
                     branch.AddCommand<Delete>("delete")
                     .WithDescription("Deletes an existing profile.");
+
+                    branch.AddCommand<List>("list")
+                    .WithDescription("Lists all loaded profiles.");
                 });
 
 #if DEBUG

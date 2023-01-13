@@ -1,9 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Spectre.Console.Cli;
 using Stargazer.Dbus;
 
 namespace Stargazer.Commands {
     public class Delete : AsyncCommand<DeleteSettings> {
-        public override async Task<int> ExecuteAsync(CommandContext context, DeleteSettings settings) {
+        public override async Task<int> ExecuteAsync([NotNull] CommandContext context, [NotNull] DeleteSettings settings) {
             
                 await DbusClient.DeleteProfileAsync(settings.Name);
 

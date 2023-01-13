@@ -15,6 +15,9 @@ namespace Stargazer.Dbus {
                 Environment.Exit(-1);
             }
 
+#if DEBUG
+            AnsiConsole.WriteLine("Connected to Lodestar server");
+#endif
             _connection = client;
         }
         
@@ -27,6 +30,22 @@ namespace Stargazer.Dbus {
             IProfileMessenger messenger = _connection.CreateProxy<IProfileMessenger>("org.mercurius", "/org/mercurius/ProfileMessenger");
             
             await messenger.DeleteProfileAsync(name);
+        }
+        public static async Task<ProfileInfo[]> ListProfilesAsync() {
+            IProfileMessenger messenger = _connection.CreateProxy<IProfileMessenger>("org.mercurius", "/org/mercurius/ProfileMessenger");
+            IDbusProfile profile;
+
+            List<ProfileInfo> profiles = new List<ProfileInfo>();
+
+            string[] names = await messenger.ListProfilesAsync();
+
+            foreach (string name in names) {
+                profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{name}");
+
+                profiles.Add(await profile.GetProfileInfoAsync());
+            }
+
+            return profiles.ToArray<ProfileInfo>();
         }
     }
 }
