@@ -10,10 +10,8 @@ namespace Stargazer.Commands {
             ModLoader loader;
 
             if (!Enum.TryParse<ModLoader>(settings.ModLoader, false, out loader)) {
-                Console.Error.WriteLine("{0} is not a valid value... ?", settings.ModLoader);
-                Environment.Exit(-1);
+                throw new Exception($"{settings.ModLoader} is not a valid mod loader... ?");
             }
-
 
             bool result = await DbusClient.CreateProfileAsync(settings.Name, settings.MinecraftVersion, loader);
 
