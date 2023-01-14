@@ -47,5 +47,10 @@ namespace Stargazer.Dbus {
 
             return profiles.ToArray<ProfileInfo>();
         }
+        public static async Task<Mod[]> ListModsAsync(string profileName) {
+            IDbusProfile profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{profileName}");
+        
+            return await profile.ListModsAsync();
+        }
     }
 }

@@ -17,8 +17,14 @@ namespace Stargazer.Commands {
                 return 0;
             }
 
-            foreach (ProfileInfo profile in profiles) {
-                AnsiConsole.MarkupLine("# {0} -- {1} {2}", profile.Name, profile.Loader, profile.MinecraftVersion);
+            foreach (ProfileInfo profileInfo in profiles) {
+                Mod[] mods = await DbusClient.ListModsAsync(profileInfo.Name.ToLower());
+
+                AnsiConsole.MarkupLine("# [underline]{0}[/] -- {1} {2}", profileInfo.Name, profileInfo.Loader, profileInfo.MinecraftVersion);
+                
+                foreach (Mod mod in mods) {
+                    AnsiConsole.MarkupLine("    - [bold]{0}[/] / [italic]{1}[/] [dim]({2})[/]", mod.Title, mod.ClientDependency, mod.FileName);
+                }
             }
 
             return 0;

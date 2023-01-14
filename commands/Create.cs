@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Spectre.Console.Cli;
+using Spectre.Console;
 using Stargazer.Dbus;
 
 namespace Stargazer.Commands {
@@ -19,9 +20,9 @@ namespace Stargazer.Commands {
             bool result = await DbusClient.CreateProfileAsync(settings.Name, settings.MinecraftVersion, loader);
 
             if (result) {
-                Console.WriteLine("Created profile {0}", settings.Name);
+                AnsiConsole.WriteLine("Created profile [underline]{0}[/]", settings.Name);
             } else {
-                Console.Error.WriteLine("Failed to create profile... ?");
+                throw new Exception($"Profile {settings.Name} already exists!");
             }
 
             return 0;
