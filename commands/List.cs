@@ -4,8 +4,6 @@ using Spectre.Console.Cli;
 using Spectre.Console;
 using Stargazer.Dbus;
 
-using Tmds.DBus;
-
 
 namespace Stargazer.Commands {
     public class List : AsyncCommand<ListSettings> {
