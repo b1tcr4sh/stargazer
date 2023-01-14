@@ -1,12 +1,17 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Spectre.Console.Cli;
 using Spectre.Console;
 using Stargazer.Dbus;
 
+using Tmds.DBus;
+
+
 namespace Stargazer.Commands {
     public class List : AsyncCommand<ListSettings> {
         public override async Task<int> ExecuteAsync([NotNull] CommandContext context, [NotNull] ListSettings settings) {
-            
+            await DbusClient.ConnectAsync();
+
             ProfileInfo[] profiles = await DbusClient.ListProfilesAsync();
 
             if (profiles.Length <= 0) {
@@ -15,7 +20,7 @@ namespace Stargazer.Commands {
             }
 
             foreach (ProfileInfo profile in profiles) {
-                AnsiConsole.MarkupLine("# _{0}_ / {1} {2}", profile.Name, profile.Loader, profile.MinecraftVersion);
+                AnsiConsole.MarkupLine("# {0} -- {1} {2}", profile.Name, profile.Loader, profile.MinecraftVersion);
             }
 
             return 0;

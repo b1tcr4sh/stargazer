@@ -1,10 +1,11 @@
-﻿using Spectre.Console.Cli;
+﻿using System.Threading.Tasks;
+using Spectre.Console.Cli;
 using Stargazer.Commands;
 using Stargazer.Dbus;
 
 namespace Stargazer {
     public class Program {
-        public static async Task<int> Main(string[] args) {
+        public static int Main(string[] args) {
             CommandApp app = new CommandApp();
 
             app.Configure(config => {
@@ -25,7 +26,7 @@ namespace Stargazer {
 #endif
             });
 
-            await DbusClient.ConnectAsync();
+            // await DbusClient.ConnectAsync();
 
             return app.Run(args);
         }

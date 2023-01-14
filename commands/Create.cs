@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Spectre.Console.Cli;
 using Stargazer.Dbus;
 
@@ -12,6 +13,8 @@ namespace Stargazer.Commands {
             if (!Enum.TryParse<ModLoader>(settings.ModLoader, false, out loader)) {
                 throw new Exception($"{settings.ModLoader} is not a valid mod loader... ?");
             }
+
+            await DbusClient.ConnectAsync();
 
             bool result = await DbusClient.CreateProfileAsync(settings.Name, settings.MinecraftVersion, loader);
 
