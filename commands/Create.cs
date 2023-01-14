@@ -20,7 +20,7 @@ namespace Stargazer.Commands {
             bool result = await DbusClient.CreateProfileAsync(settings.Name, settings.MinecraftVersion, loader);
 
             if (result) {
-                AnsiConsole.WriteLine("Created profile [underline]{0}[/]", settings.Name);
+                AnsiConsole.MarkupLine("Created profile [underline]{0}[/]", settings.Name);
             } else {
                 throw new Exception($"Profile {settings.Name} already exists!");
             }

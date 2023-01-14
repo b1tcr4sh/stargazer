@@ -10,7 +10,7 @@ namespace Stargazer.Commands {
             await DbusClient.ConnectAsync();
 
             await DbusClient.DeleteProfileAsync(settings.Name);
-            AnsiConsole.WriteLine("Deleted profile [underline]{0}[/]", settings.Name);
+            AnsiConsole.MarkupLine("Deleted profile [underline]{0}[/]", settings.Name);
 
             return 0;
         }
