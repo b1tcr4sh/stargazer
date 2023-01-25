@@ -20,6 +20,10 @@ namespace Stargazer {
                     branch.AddCommand<List>("list")
                     .WithDescription("Lists all loaded profiles.");
                 });
+                config.AddBranch("mod", branch => {
+                    branch.AddCommand<Remove>("remove")
+                    .WithDescription("Removes a mod from a profile.");
+                });
 
                 config.AddCommand<Sync>("sync")
                 .WithDescription("Add mod to profile");

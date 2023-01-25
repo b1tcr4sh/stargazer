@@ -27,10 +27,14 @@ namespace Stargazer.Dbus {
 
             return await messenger.CreateProfileAsync(name, version, loader, false);
         }
-        public static async Task DeleteProfileAsync(string name) {
+        public static async Task DeleteProfileAsync(string profileName) {
+            if (!(await CheckProfileExistsAsync(profileName))) {
+                throw new Exception($"Profile {profileName} doesn't exist!");
+            }
+
             IProfileMessenger messenger = _connection.CreateProxy<IProfileMessenger>("org.mercurius", "/org/mercurius/ProfileMessenger");
             
-            await messenger.DeleteProfileAsync(name);
+            await messenger.DeleteProfileAsync(profileName);
         }
         public static async Task<ProfileInfo[]> ListProfilesAsync() {
             IProfileMessenger messenger = _connection.CreateProxy<IProfileMessenger>("org.mercurius", "/org/mercurius/ProfileMessenger");
@@ -48,6 +52,10 @@ namespace Stargazer.Dbus {
             return profiles.ToArray<ProfileInfo>();
         }
         public static async Task<Mod[]> ListModsAsync(string profileName) {
+             if (!(await CheckProfileExistsAsync(profileName))) {
+                throw new Exception($"Profile {profileName} doesn't exist!");
+            }
+
             IDbusProfile profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{profileName}");
         
             return await profile.ListModsAsync();
@@ -62,23 +70,37 @@ namespace Stargazer.Dbus {
             
             return await profile.AddModAsync(projectId, repo, ignoreDeps);
         }
-        public static async Task<bool> CheckProfileExistsAsync(string name) {
+        public static async Task<bool> CheckProfileExistsAsync(string profileName) {
             IProfileMessenger messenger = _connection.CreateProxy<IProfileMessenger>("org.mercurius.ProfileMessenger", "/org/mercurius/ProfileMessenger");
 
             string[] profiles = await messenger.ListProfilesAsync();
-            if (!profiles.Contains<string>(name)) {
+            if (!profiles.Contains<string>(profileName)) {
                 return false;   
             }
 
             return true;
         }
-        public static async Task<ProfileInfo> GetProfileInfoAsync(string name) {
-            if (!(await CheckProfileExistsAsync(name))) {
-                throw new Exception($"Profile {name} doesn't exist!");
+        public static async Task<ProfileInfo> GetProfileInfoAsync(string profileName) {
+            if (!(await CheckProfileExistsAsync(profileName))) {
+                throw new Exception($"Profile {profileName} doesn't exist!");
             }
             
-            IDbusProfile profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{name}");
+            IDbusProfile profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{profileName}");
             return await profile.GetProfileInfoAsync();
+        }
+        public static async Task<bool> RemoveModAsync(string profileName, string id, bool force) {
+            if (!(await CheckProfileExistsAsync(profileName))) {
+                throw new Exception($"Profile {profileName} doesn't exist!");
+            }
+
+            IDbusProfile profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{profileName}");
+            try {
+                await profile.RemoveModAsync(id, force);
+            } catch (DBusException) {
+                return false;
+            }
+
+            return true;
         }
     }
 }
