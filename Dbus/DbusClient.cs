@@ -102,5 +102,14 @@ namespace Stargazer.Dbus {
 
             return true;
         }
+        public static async Task<ValidityReport> VerifyAsync(string profileName) {
+            if (!(await CheckProfileExistsAsync(profileName))) {
+                throw new Exception($"Profile {profileName} doesn't exist!");
+            }
+
+            IDbusProfile profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{profileName}");
+
+            return await profile.VerifyAsync();
+        }
     }
 }

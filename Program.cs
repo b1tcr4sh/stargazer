@@ -21,6 +21,9 @@ namespace Stargazer {
 
                     branch.AddCommand<List>("list")
                     .WithDescription("Lists all loaded profiles.");
+
+                    branch.AddCommand<Verify>("verify")
+                    .WithDescription("Verifies that the profile is useable");
                 });
                 config.AddBranch("mod", branch => {
                     branch.SetDescription("List and remove mods from a specific profile");
