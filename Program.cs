@@ -21,12 +21,12 @@ namespace Stargazer {
                     .WithDescription("Lists all loaded profiles.");
                 });
 
+                config.AddCommand<Sync>("sync")
+                .WithDescription("Add mod to profile");
 #if DEBUG
                 config.PropagateExceptions();
 #endif
             });
-
-            // await DbusClient.ConnectAsync();
 
             return app.Run(args);
         }

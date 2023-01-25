@@ -4,7 +4,7 @@ using Spectre.Console;
 
 namespace Stargazer.Dbus {
     public class DbusClient {
-        public static Connection _connection;
+        private static Connection _connection;
         public static async Task ConnectAsync() {
             Connection client = new Connection("tcp:host=localhost,port=44881");
 
@@ -51,6 +51,34 @@ namespace Stargazer.Dbus {
             IDbusProfile profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{profileName}");
         
             return await profile.ListModsAsync();
+        }
+        public static async Task<bool> SyncProfileAsync(string profileName) {
+            IDbusProfile profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{profileName}");
+        
+            return await profile.SyncAsync();
+        }
+        public static async Task<Mod[]> AddModAsync(string profileName, string projectId, Repo repo, bool ignoreDeps) {
+            IDbusProfile profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{profileName}");
+            
+            return await profile.AddModAsync(projectId, repo, ignoreDeps);
+        }
+        public static async Task<bool> CheckProfileExistsAsync(string name) {
+            IProfileMessenger messenger = _connection.CreateProxy<IProfileMessenger>("org.mercurius.ProfileMessenger", "/org/mercurius/ProfileMessenger");
+
+            string[] profiles = await messenger.ListProfilesAsync();
+            if (!profiles.Contains<string>(name)) {
+                return false;   
+            }
+
+            return true;
+        }
+        public static async Task<ProfileInfo> GetProfileInfoAsync(string name) {
+            if (!(await CheckProfileExistsAsync(name))) {
+                throw new Exception($"Profile {name} doesn't exist!");
+            }
+            
+            IDbusProfile profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{name}");
+            return await profile.GetProfileInfoAsync();
         }
     }
 }
