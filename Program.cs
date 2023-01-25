@@ -10,6 +10,8 @@ namespace Stargazer {
 
             app.Configure(config => {
                 config.AddBranch("profile", branch => {
+                    branch.SetDescription("Create, delete, and list profiles");
+
                     branch.AddCommand<Create>("create")
                     .WithDescription("Creates a new profile.")
                     .WithExample(new string[] { "profile", "create", "uwu", "1.19.2", "fabric" });
@@ -21,12 +23,15 @@ namespace Stargazer {
                     .WithDescription("Lists all loaded profiles.");
                 });
                 config.AddBranch("mod", branch => {
+                    branch.SetDescription("List and remove mods from a specific profile");
+
                     branch.AddCommand<Remove>("remove")
-                    .WithDescription("Removes a mod from a profile.");
+                    .WithDescription("Removes mods from a profile.");
                 });
 
                 config.AddCommand<Sync>("sync")
-                .WithDescription("Add mod to profile");
+                .WithDescription("Sync profiles with remote repositories")
+                .WithExample(new string[] { "sync", "uwu", "sodium", "--", "Adds Sodium to profile uwu" });
 #if DEBUG
                 config.PropagateExceptions();
 #endif
