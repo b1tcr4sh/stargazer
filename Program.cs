@@ -27,6 +27,9 @@ namespace Stargazer {
 
                     branch.AddCommand<Remove>("remove")
                     .WithDescription("Removes mods from a profile.");
+
+                    branch.AddCommand<ListMods>("list")
+                    .WithDescription("Lists all mods of a profile");
                 });
 
                 config.AddCommand<Sync>("sync")
