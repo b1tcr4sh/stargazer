@@ -1,16 +1,19 @@
 namespace Stargazer {
-    public enum Repo {
+    public enum Remote {
         modrinth,
         curseforge,
         custom
     }
     public enum ClientType {
-        ClientSide, ServerSide
+        Client, Server
     }
     public enum ModLoader {
         unknown, forge, fabric, quilt, liteloader, rift, modloader
     }
-        public enum ClientDependency {
-        ClientSide, ServerSide, ClientServerDependent, Unknown
+    public enum RequiredBy {
+        client, server, mutuak, unknown
+    }
+    public enum DependencyType {
+        required, optional, incompatible, embedded
     }
 }

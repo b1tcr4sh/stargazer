@@ -65,7 +65,7 @@ namespace Stargazer.Dbus {
         
             return await profile.SyncAsync();
         }
-        public static async Task<Mod[]> AddModAsync(string profileName, string projectId, Repo repo, bool ignoreDeps) {
+        public static async Task<Mod[]> AddModAsync(string profileName, string projectId, Remote repo, bool ignoreDeps) {
             IDbusProfile profile = _connection.CreateProxy<IDbusProfile>("org.mercurius.profile", $"/org/mercurius/profile/{profileName}");
             
             return await profile.AddModAsync(projectId, repo, ignoreDeps);

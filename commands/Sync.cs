@@ -25,7 +25,7 @@ namespace Stargazer.Commands {
                 string project = ChooseProject(search);
 
                 AnsiConsole.WriteLine("Adding mod to profile...");
-                Mod[] installed = await DbusClient.AddModAsync(settings.ProfileName, project, Repo.modrinth, settings.IgnoreDeps);
+                Mod[] installed = await DbusClient.AddModAsync(settings.ProfileName, project, Remote.modrinth, settings.IgnoreDeps);
             }
 
         

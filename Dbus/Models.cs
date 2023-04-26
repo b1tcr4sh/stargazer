@@ -12,8 +12,8 @@ namespace Stargazer.Dbus {
     [DBusInterface("org.mercurius.profile")]
     public interface IDbusProfile : IDBusObject {
         public Task<ProfileInfo> GetProfileInfoAsync();
-        public Task<Mod[]> AddModAsync(string id, Repo service, bool ignoreDependencies);
-        public Task<Mod[]> AddVersionAsync(string version, Repo service, bool ignoreDependencies);
+        public Task<Mod[]> AddModAsync(string id, Remote service, bool ignoreDependencies);
+        public Task<Mod[]> AddVersionAsync(string version, Remote service, bool ignoreDependencies);
         public Task<bool> RemoveModAsync(string id, bool force);
         public Task<bool> SyncAsync();
         public Task<Mod[]> ListModsAsync();
@@ -32,9 +32,10 @@ namespace Stargazer.Dbus {
         public string VersionId { get; set; }
         public string MinecraftVersion { get; set; }
         public string ModVersion { get; set; }
+        public Remote Repo { get; set; }
         public ModLoader[] Loaders { get; set; }
         public IEnumerable<string> DependencyVersions { get; set; }
-        public ClientDependency ClientDependency { get; set; }
+        public RequiredBy ClientDependency { get; set; }
     }
 
     [StructLayout(LayoutKind.Sequential)]
